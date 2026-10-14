@@ -14,7 +14,7 @@
 
 You play as a young pirate caught in a ferocious hurricane after stealing an enigmatic, supernatural compass from a cursed galleon. The compass does not point north—it leads to legendary Aztec treasure, but is bound to a sinister ancient curse.
 
-Across six perilous chapters, you must survive sinking ships, solve lost jungle ruins, uncover traitors in pirate ports, captain your warship in naval artillery battles, dive into bioluminescent underwater caves, and ultimately confront the ghostly shade of Davy Jones to choose the fate of the seas.
+Across fifteen perilous levels, survive a sinking ship, explore jungle ruins, uncover traitors in pirate ports, command a warship, brave cursed caves and haunted waters, and ultimately confront the ghostly shade of Davy Jones to choose the fate of the seas.
 
 ---
 
@@ -23,9 +23,9 @@ Across six perilous chapters, you must survive sinking ships, solve lost jungle 
 | Action | Keyboard / Mouse | Description |
 |---|---|---|
 | **Move** | `A` / `D` or `←` / `→` | Run left and right across decks, beaches, and cobblestones |
-| **Jump** | `W` / `Space` or `↑` | Jump over obstacles and ascend platforms |
-| **Climb** | `W` / `S` or `↑` / `↓` | Climb ship rigging, ladders, and jungle vines |
-| **Swim** | `W` / `A` / `S` / `D` | Full underwater 360° swimming physics (Level 5) |
+| **Jump** | `W` / `Space` | Jump over obstacles and ascend platforms |
+| **Climb** | Hold `↑` while on a ladder | Manually climb ship rigging, ladders, and jungle vines |
+| **Swim** | `W` / `A` / `S` / `D` | Move through underwater areas |
 | **Cutlass Attack** | `J` or `Left Mouse Click` | 3-hit swashbuckling sword attack combo with spark FX |
 | **Parry / Guard** | `K` or `Right Mouse Click` | Raise blade to absorb 80% damage and stagger foes |
 | **Flintlock Pistol** | `F` | Fire gunpowder shot at distant enemies (consumes ammo) |
@@ -40,33 +40,42 @@ Across six perilous chapters, you must survive sinking ships, solve lost jungle 
 
 ---
 
-## 🗺️ 6-Level Campaign Architecture
+## 🗺️ 15-Level Campaign
 
 1. **Level 1 — The Storm & Theft**
-   - *Setting:* Open stormy sea with heavy rain and lightning.
-   - *Features:* Tutorial on movement and swordplay, avoiding skeletal deckhands, claiming The Lost Compass from the captain's quarters, and escaping via dinghy before the ship sinks.
+   - Survive the storm, take the compass from the captain's quarters, and escape by dinghy.
 
 2. **Level 2 — The Hidden Island**
-   - *Setting:* Tropical jungle and ancient Aztec ruins.
-   - *Features:* Vertical platforming across vines and stone pillars, wild panthers and corsairs, and the **Statue Alignment Puzzle** (rotate Jaguar, Serpent, and Eagle statues using the Compass's light beam to open the sealed glyph tablet).
+   - Cross the jungle ruins, solve the Jaguar, Serpent, and Eagle statue puzzle, and find the first clue.
 
 3. **Level 3 — Port Royale (Town)**
-   - *Setting:* Bustling Caribbean pirate port at twilight.
-   - *Features:* Dialogue with **Old Blind Barnaby**, tavern mistress **Madame Rouge** (shop for rum and powder), uncovering and dueling the hidden **East India Spy**, and preparing the galleon with **First Mate Flint**.
+   - Gather information from the townsfolk, expose the East India spy, and prepare the crew.
 
 4. **Level 4 — Naval Battle**
-   - *Setting:* Open sea ship-to-ship warfare.
-   - *Features:* Real-time galleon navigation, wind and rudder physics, maneuvering to unleash port and starboard cannon broadsides, crippling the rival flagship *"The Black Dread"*, and boarding her to plunder sea charts.
+   - Maneuver the Sea Serpent and defeat the Black Dread with cannon broadsides.
 
 5. **Level 5 — The Cursed Caves**
-   - *Setting:* Bioluminescent underwater grotto.
-   - *Features:* Underwater exploration with oxygen/breath meter and air pockets, ancient water gate lever puzzles, and the **Spectral Sea Wraith** boss fight (teleportation, ghostly wave blades).
+   - Explore underwater caverns, manage oxygen, raise the water gate, and defeat the Spectral Sea Wraith.
 
-6. **Level 6 — The Final Treasure**
-   - *Setting:* Sunken Aztec Citadel at golden sunset.
-   - *Features:* Crumbling ramparts, the climactic showdown with **Davy's Shade**, and the **Pivotal Moral Ending Choice**:
-     - **Choice A: Claim the Cursed Gold** — Become the immortal skeletal Pirate Lord of the seas.
-     - **Choice B: Return the Compass** — Lift the ancient curse, restore peace to the ocean, and sail into dawn as a legend!
+6. **Level 6 — The Iron Bastion** — Break out of the naval prison and escape with the launch key.
+7. **Level 7 — Ghost Lighthouse** — Climb the haunted lighthouse and relight its beacon.
+8. **Level 8 — The Shattered Reef** — Navigate the underwater reef and activate its channel marker.
+9. **Level 9 — The Drowned Galleon** — Search the wreck for the captain's sealed chart case.
+10. **Level 10 — Smugglers' Port** — Find the harbor ledger, inspect the signal lantern, and warn the lookout.
+11. **Level 11 — Leviathan of the Deep** — Survive the abyssal trench and defeat the Leviathan.
+12. **Level 12 — Haunted Bay** — Clear the haunted shore and silence the cursed signal bell.
+13. **Level 13 — The Lost Fleet** — Cross the wrecks and recover the admiral's route book.
+14. **Level 14 — Tempest Crossing** — Secure three navigation beacons in the maelstrom.
+15. **Level 15 — The Final Treasure** — Defeat Davy's Shade and choose whether to claim the gold or return the compass.
+
+The title-screen level select offers all 15 levels.
+
+## 🎒 Starting Resources
+
+- **Health:** 100 maximum.
+- **Gunpowder ammo:** 20 shots at the start, with a maximum capacity of 20.
+- **Gold:** 50.
+- **Aged Caribbean Rum:** 2 servings; each restores up to 45 health.
 
 ---
 
@@ -84,5 +93,5 @@ Across six perilous chapters, you must survive sinking ships, solve lost jungle 
 No installations, build steps, or external dependencies are required. The game is completely standalone!
 
 1. Open `index.html` in any modern web browser (Google Chrome, Firefox, Microsoft Edge, Safari).
-2. Click **"Embark on Adventure"** to start the journey from Level 1, or use **"Select Level"** to jump directly to any of the 6 chapters.
+2. Click **"Embark on Adventure"** to start the journey from Level 1, or use **"Select Level (1 - 15)"** to choose a level.
 3. Enjoy your voyage across the Caribbean!
