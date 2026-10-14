@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#020617" />
+      <stop offset="40%" stop-color="#0f172a" />
+      <stop offset="80%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#091e2b" />
+    </linearGradient>
+    <linearGradient id="goldText" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="45%" stop-color="#d4af37" />
+      <stop offset="100%" stop-color="#854d0e" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Sky Background -->
+  <rect width="1200" height="630" fill="url(#skyGrad)" />
+
+  <!-- Lightning Bolt -->
+  <polyline points="420,0 400,120 440,160 380,310" stroke="#bae6fd" stroke-width="4" filter="url(#glow)" opacity="0.8" />
+
+  <!-- Distant Galleon Silhouette in the Storm -->
+  <g transform="translate(680, 240) scale(1.1)" opacity="0.85">
+    <!-- Hull -->
+    <path d="M 0,160 Q 140,190 280,160 L 260,210 Q 140,240 20,210 Z" fill="#030712" />
+    <!-- Masts & Billowing Storm Sails -->
+    <rect x="70" y="30" width="8" height="150" fill="#030712" />
+    <path d="M 78,50 Q 140,65 140,110 L 78,110 Z" fill="#1e293b" />
+    <rect x="180" y="0" width="10" height="180" fill="#030712" />
+    <path d="M 190,20 Q 270,40 270,100 L 190,100 Z" fill="#1e293b" />
+    <path d="M 190,110 Q 260,125 260,160 L 190,160 Z" fill="#1e293b" />
+  </g>
+
+  <!-- Raging Waves -->
+  <path d="M 0,440 Q 150,390 300,440 T 600,440 T 900,440 T 1200,440 L 1200,630 L 0,630 Z" fill="#071b29" />
+  <path d="M 0,480 Q 200,430 400,480 T 800,480 T 1200,480 L 1200,630 L 0,630 Z" fill="#020e17" />
+
+  <!-- Title Text -->
+  <text x="600" y="160" fill="url(#goldText)" font-family="Georgia, serif" font-size="82" font-weight="900" letter-spacing="4" text-anchor="middle" filter="url(#glow)">THE LOST COMPASS</text>
+  <text x="600" y="215" fill="#e2e8f0" font-family="Georgia, serif" font-size="22" letter-spacing="6" text-anchor="middle">A PIRATES OF THE CARIBBEAN INSPIRED ADVENTURE</text>
+
+  <!-- Prompt Quote -->
+  <text x="600" y="560" fill="#fef08a" font-family="Georgia, serif" font-size="20" font-style="italic" text-anchor="middle">"Not all treasure is gold, some are the adventures we live."</text>
+  <text x="600" y="595" fill="#94a3b8" font-family="Georgia, serif" font-size="16" letter-spacing="3" text-anchor="middle">RESPAWN 2D GAME JAM EDITION</text>
+</svg>

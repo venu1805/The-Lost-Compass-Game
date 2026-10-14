@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Lost Compass - A Pirates of the Caribbean Inspired Adventure</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+</head>
+<body>
+  <div id="game-container">
+    <!-- Main Game Canvas -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <!-- HUD Overlay Layer -->
+    <div id="hud">
+      <!-- Player Status Card (Top Left) -->
+      <div class="player-status-card hud-interactive">
+        <div class="player-avatar-frame">
+          <div class="avatar-icon">🏴‍☠️</div>
+        </div>
+        <div class="bars-container">
+          <!-- Health Bar -->
+          <div class="bar-row">
+            <span class="bar-label">HEALTH</span>
+            <div class="progress-track">
+              <div id="health-fill" class="progress-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+          <!-- Stamina Bar -->
+          <div class="bar-row">
+            <span class="bar-label">STAMINA</span>
+            <div class="progress-track">
+              <div id="stamina-fill" class="progress-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+          <!-- Oxygen Bar (Underwater in Level 5) -->
+          <div id="oxygen-row" class="bar-row">
+            <span class="bar-label">BREATH</span>
+            <div class="progress-track">
+              <div id="oxygen-fill" class="progress-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+          <!-- Resource Badge -->
+          <div class="resource-badge">
+            <div class="resource-item">
+              <span class="icon">🪙</span>
+              <span id="gold-count">50</span>
+            </div>
+            <div class="resource-item">
+              <span class="icon">💣</span>
+              <span id="ammo-count">8/20</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Current Objective Banner (Top Center) -->
+      <div class="objective-banner">
+        <span id="current-level-badge" class="level-badge">LEVEL 1</span>
+        <span class="objective-icon">✧</span>
+        <div class="objective-copy">
+          <span id="current-objective-text" class="objective-text">Survive the storm and find the lost compass</span>
+          <span id="current-objective-hint" class="objective-hint"></span>
+        </div>
+      </div>
+
+      <!-- The Lost Compass HUD Widget (Top Right) -->
+      <div id="compass-widget" class="compass-hud-widget" title="Click or Press [C] for Spectral Sight">
+        <div class="compass-rim-markers"></div>
+        <div class="compass-dial">
+          <span class="cardinal-pts pt-n">N</span>
+          <span class="cardinal-pts pt-s">S</span>
+          <span class="cardinal-pts pt-e">E</span>
+          <span class="cardinal-pts pt-w">W</span>
+          <div id="compass-needle-pivot" class="needle-pivot">
+            <div class="compass-needle"></div>
+            <div class="needle-center-pin"></div>
+          </div>
+        </div>
+        <div class="compass-key-hint">[C] SIGHT</div>
+      </div>
+
+      <button id="btn-pause-game" class="pause-menu-button hud-interactive" type="button" aria-label="Pause menu" title="Pause menu">
+        ☰
+      </button>
+
+      <!-- Quick Action Hotbar (Bottom Center) -->
+      <div class="action-hotbar">
+        <button id="btn-attack-action" class="action-btn" title="Cutlass Slash">
+          ⚔️ Slash <span class="key">J</span>
+        </button>
+        <button id="btn-shoot-action" class="action-btn" title="Flintlock Shot">
+          🔫 Shot <span class="key">F</span>
+        </button>
+        <button id="btn-dodge-action" class="action-btn" title="Dodge Roll">
+          💨 Roll <span class="key">Shift</span>
+        </button>
+        <button id="btn-compass-action" class="action-btn" title="Activate Spectral Sight">
+          🧭 Sight <span class="key">C</span>
+        </button>
+        <button id="btn-inventory" class="action-btn" title="Open Inventory">
+          🎒 Bag <span class="key">I</span>
+        </button>
+      </div>
+
+      <div id="touch-controls" aria-label="Touch game controls">
+        <div class="touch-dpad" aria-label="Movement controls">
+          <button class="touch-control" data-touch-key="KeyW" type="button" aria-label="Move up" title="Move up">▲</button>
+          <button class="touch-control" data-touch-key="KeyA" type="button" aria-label="Move left" title="Move left">◀</button>
+          <button class="touch-control" data-touch-key="KeyS" type="button" aria-label="Move down" title="Move down">▼</button>
+          <button class="touch-control" data-touch-key="KeyD" type="button" aria-label="Move right" title="Move right">▶</button>
+        </div>
+        <div class="touch-actions" aria-label="Action controls">
+          <button class="touch-control" data-touch-key="KeyJ" type="button" aria-label="Attack" title="Attack">⚔</button>
+          <button class="touch-control" data-touch-key="KeyF" type="button" aria-label="Fire" title="Fire">🔫</button>
+          <button class="touch-control" data-touch-key="KeyE" type="button" aria-label="Interact or starboard fire" title="Interact / Starboard fire">E</button>
+          <button class="touch-control" data-touch-key="ShiftLeft" type="button" aria-label="Dodge" title="Dodge">↗</button>
+          <button class="touch-control" data-touch-key="KeyQ" type="button" aria-label="Dodge or port fire" title="Dodge / Port fire">Q</button>
+          <button class="touch-control" data-touch-key="KeyK" type="button" aria-label="Block or starboard fire" title="Block / Starboard fire">K</button>
+          <button class="touch-control" data-touch-key="KeyR" type="button" aria-label="Repair ship" title="Repair ship">R</button>
+          <button class="touch-control" data-touch-key="KeyI" type="button" aria-label="Inventory" title="Inventory">🎒</button>
+          <button class="touch-control" data-touch-key="KeyC" type="button" aria-label="Compass sight" title="Compass sight">🧭</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pause-modal" class="modal-overlay pause-modal" aria-label="Pause menu">
+      <div class="parchment-window pause-window">
+        <h2 class="window-title">Voyage Paused</h2>
+        <div class="pause-menu-actions">
+          <button id="btn-resume-game" class="menu-btn-large">Resume</button>
+          <button id="btn-restart-level" class="menu-btn-secondary">Restart Level</button>
+          <button id="btn-main-menu" class="menu-btn-secondary">Main Menu</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive Dialogue Modal -->
+    <div id="dialogue-modal">
+      <div class="npc-portrait-frame">
+        <canvas id="npc-portrait-canvas" class="npc-portrait-canvas"></canvas>
+      </div>
+      <div class="dialogue-content">
+        <div id="dialogue-speaker-name" class="dialogue-speaker">NPC Name</div>
+        <div id="dialogue-message-body" class="dialogue-text">Dialogue text appears here...</div>
+        <div id="dialogue-choices-container" class="dialogue-choices"></div>
+      </div>
+    </div>
+
+    <!-- Inventory Modal -->
+    <div id="inventory-modal" class="modal-overlay">
+      <div class="parchment-window">
+        <div class="window-header">
+          <h2 class="window-title">Pirate's Sea Chest</h2>
+          <button id="close-inventory" class="close-btn">&times;</button>
+        </div>
+        <div id="inventory-slots-container" class="inventory-grid"></div>
+        <div id="item-details-content" class="item-details-panel">
+          Select an item to view details.
+        </div>
+      </div>
+    </div>
+
+    <!-- Level Select Modal -->
+    <div id="level-select-modal" class="modal-overlay">
+      <div class="parchment-window level-select-window" style="max-width: 720px;">
+        <div class="window-header">
+          <h2 class="window-title">Expedition Log (15 Voyages)</h2>
+          <button id="close-level-select" class="close-btn">&times;</button>
+        </div>
+        <div class="level-select-grid">
+          <button class="menu-btn-secondary select-level-btn" data-level="1">
+            <strong>Level 1:</strong> The Storm & Theft (Survive Sinking Galleon)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="2">
+            <strong>Level 2:</strong> The Hidden Island (Jungle & Statue Alignment)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="3">
+            <strong>Level 3:</strong> Port Royale (Town Hub, Quests & Spy Hunt)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="4">
+            <strong>Level 4:</strong> Naval Battle (Open Sea Ship Warfare & Broadsides)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="5">
+            <strong>Level 5:</strong> The Cursed Caves (Underwater Grotto & Boss)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="6">
+            <strong>Level 6:</strong> The Iron Bastion (Naval Prison Escape)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="7">
+            <strong>Level 7:</strong> Ghost Lighthouse (Climb & Relight the Beacon)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="8">
+            <strong>Level 8:</strong> The Shattered Reef (Underwater Passage)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="9">
+            <strong>Level 9:</strong> The Drowned Galleon (Shipwreck Salvage)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="10">
+            <strong>Level 10:</strong> Smugglers’ Port (Uncover the Secret Route)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="11">
+            <strong>Level 11:</strong> Leviathan of the Deep (Sea Monster Encounter)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="12">
+            <strong>Level 12:</strong> Haunted Bay (Silence the Signal Bell)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="13">
+            <strong>Level 13:</strong> The Lost Fleet (Recover the Route Book)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="14">
+            <strong>Level 14:</strong> Tempest Crossing (Secure the Beacons)
+          </button>
+          <button class="menu-btn-secondary select-level-btn" data-level="15">
+            <strong>Level 15:</strong> The Final Treasure (Citadel, Shade & Moral Choice)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level Complete Modal -->
+    <div id="level-complete-modal" class="modal-overlay">
+      <div class="parchment-window" style="text-align: center; max-width: 480px;">
+        <div style="font-size: 48px; margin-bottom: 8px;">⚓</div>
+        <h2 id="level-complete-title" class="window-title" style="margin-bottom: 8px;">Level Completed!</h2>
+        <p id="level-complete-desc" style="margin-bottom: 24px; color: var(--parchment-dark); line-height: 1.5;"></p>
+        <button id="btn-next-level" class="menu-btn-large" style="width: 100%;">Set Sail For Next Voyage ➔</button>
+      </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="modal-overlay">
+      <div class="parchment-window" style="text-align: center; max-width: 460px; border-color: var(--crimson);">
+        <div style="font-size: 52px; margin-bottom: 8px;">☠️</div>
+        <h2 class="window-title" style="color: #ef4444; margin-bottom: 8px;">Davy Jones' Locker</h2>
+        <p style="margin-bottom: 24px; color: #cbd5e1; line-height: 1.5;">
+          The waves claimed your soul and the curse remains unbroken...
+        </p>
+        <button id="btn-respawn" class="menu-btn-large" style="background: linear-gradient(180deg, #b91c1c, #7f1d1d); border-color: #ef4444; width: 100%;">
+          Rise from the Abyss (Respawn)
+        </button>
+      </div>
+    </div>
+
+    <!-- Moral Ending Choice Modal (Level 6) -->
+    <div id="ending-modal" class="modal-overlay">
+      <div class="parchment-window" style="max-width: 600px; text-align: center;">
+        <div style="font-size: 48px; margin-bottom: 8px;">👑</div>
+        <h2 class="window-title">The Cursed Altar of Aztec Gold</h2>
+        <p style="margin-bottom: 20px; line-height: 1.6; color: var(--parchment);">
+          Before you lies the legendary Aztec treasure. The lost compass burns with mystic fire. You must make the ultimate choice that will decide your destiny:
+        </p>
+        <div style="display: flex; gap: 14px; justify-content: center;">
+          <button id="btn-choice-gold" class="menu-btn-large" style="background: linear-gradient(180deg, #d97706, #78350f); flex: 1;">
+            💰 Claim the Cursed Gold<br>
+            <small style="font-size: 11px; font-weight: normal; opacity: 0.9;">Immortal Skeletal Pirate King</small>
+          </button>
+          <button id="btn-choice-curse" class="menu-btn-large" style="background: linear-gradient(180deg, #0284c7, #075985); flex: 1;">
+            ✨ Return the Compass<br>
+            <small style="font-size: 11px; font-weight: normal; opacity: 0.9;">Break the Curse & Free the Seas</small>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Final Victory / Epilogue Modal -->
+    <div id="victory-modal" class="modal-overlay">
+      <div class="parchment-window" style="text-align: center; max-width: 580px;">
+        <div style="font-size: 54px; margin-bottom: 6px;">🧭</div>
+        <h2 id="victory-title" class="window-title">Legend of the High Seas</h2>
+        <p id="victory-desc" style="margin-bottom: 24px; line-height: 1.6; color: var(--parchment-dark); font-size: 16px;"></p>
+        <blockquote style="font-style: italic; color: var(--gold-light); margin-bottom: 24px;">
+          "Not all treasure is gold, some are the adventures we live."
+        </blockquote>
+        <button class="menu-btn-large" onclick="location.reload()" style="width: 100%;">Sail Again (Play Again)</button>
+      </div>
+    </div>
+
+    <!-- Title Screen (Full Screen Splash) -->
+    <div id="title-screen" class="fullscreen-splash">
+      <div style="font-size: 46px; margin-bottom: 6px;">☠️ 🧭 ⚔️</div>
+      <h1 class="game-logo-title">THE LOST COMPASS</h1>
+      <h3 class="game-subtitle">A Pirates of the Caribbean Inspired Adventure</h3>
+      <p class="splash-quote">
+        "A stolen compass. A cursed past. A journey across the seas. Find the truth before it's too late."
+      </p>
+
+      <div class="menu-btn-group">
+        <button id="btn-continue-game" class="menu-btn-secondary" hidden>Continue Voyage</button>
+        <button id="btn-play-game" class="menu-btn-large">Embark on Adventure</button>
+        <button id="btn-level-select" class="menu-btn-secondary">Select Level (1 - 15)</button>
+      </div>
+
+      <div style="margin-top: 32px; font-size: 12px; color: #a1a1aa; line-height: 1.7; max-width: 540px;">
+        <strong>CONTROLS:</strong> [A / D] Move &bull; [W / Space] Jump &bull; [W / S] Climb Ladders &bull; [J / Click] Sword Slash &bull; [K / R-Click] Block/Parry &bull; [F] Pistol Shot &bull; [Shift] Dodge Roll &bull; [C] Spectral Sight &bull; [E] Interact/Talk &bull; [I] Inventory
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/compass.js"></script>
+  <script src="js/inventory.js"></script>
+  <script src="js/dialogue.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/entities.js"></script>
+  <script src="js/ship.js"></script>
+  <script src="js/levels.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
