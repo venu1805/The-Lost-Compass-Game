@@ -37,6 +37,7 @@ Across fifteen perilous levels, survive a sinking ship, explore jungle ruins, un
 | **Sails (Level 4)** | `W` / `S` | Hoist sails for speed / Furl sails to slow down |
 | **Broadsides (Level 4)** | `Q` (Port) / `E` (Starboard) | Fire triple-cannon artillery volleys |
 | **Repair Ship (Level 4)** | `R` | Crew repairs hull integrity |
+| **Radar (Level 4)** | Always active | Track the Black Dread's relative bearing and distance |
 
 ---
 
@@ -52,7 +53,7 @@ Across fifteen perilous levels, survive a sinking ship, explore jungle ruins, un
    - Gather information from the townsfolk, expose the East India spy, and prepare the crew.
 
 4. **Level 4 — Naval Battle**
-   - Maneuver the Sea Serpent and defeat the Black Dread with cannon broadsides.
+   - Use the radar to track the Black Dread's bearing and distance while maneuvering the Sea Serpent and firing cannon broadsides.
 
 5. **Level 5 — The Cursed Caves**
    - Explore underwater caverns, manage oxygen, raise the water gate, and defeat the Spectral Sea Wraith.

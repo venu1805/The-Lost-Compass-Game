@@ -799,6 +799,92 @@ class Level4_NavalBattle extends LevelBase {
     ctx.fillText("A/D: Steer | W: Toggle Sails | S: Brake", 30, window.innerHeight - 70);
     ctx.fillText("F: Bow Fire | Q/J: Port | E/K: Starboard | R: Repair", 30, window.innerHeight - 48);
 
+    this.renderRadar(ctx);
+
+    ctx.restore();
+  }
+
+  renderRadar(ctx) {
+    const radarX = 88;
+    const radarY = 178;
+    const radarRadius = 62;
+    const radarRange = 1200;
+    const flagship = this.enemyShips.find(ship => !ship.isDestroyed);
+
+    ctx.save();
+    ctx.fillStyle = 'rgba(3, 20, 25, 0.88)';
+    ctx.strokeStyle = 'rgba(103, 232, 249, 0.85)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(radarX, radarY, radarRadius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(radarX, radarY, radarRadius * 0.5, 0, Math.PI * 2);
+    ctx.moveTo(radarX - radarRadius + 4, radarY);
+    ctx.lineTo(radarX + radarRadius - 4, radarY);
+    ctx.moveTo(radarX, radarY - radarRadius + 4);
+    ctx.lineTo(radarX, radarY + radarRadius - 4);
+    ctx.strokeStyle = 'rgba(103, 232, 249, 0.3)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(radarX, radarY, radarRadius - 3, 0, Math.PI * 2);
+    ctx.clip();
+    const sweepAngle = (Date.now() * 0.001) % (Math.PI * 2);
+    ctx.beginPath();
+    ctx.moveTo(radarX, radarY);
+    ctx.arc(radarX, radarY, radarRadius - 4, sweepAngle - 0.45, sweepAngle);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(34, 211, 238, 0.12)';
+    ctx.fill();
+
+    if (flagship && this.playerShip) {
+      const dx = flagship.x - this.playerShip.x;
+      const dy = flagship.y - this.playerShip.y;
+      const distance = Math.hypot(dx, dy);
+      const relativeAngle = Math.atan2(dy, dx) - this.playerShip.angle;
+      const blipDistance = Math.min(distance / radarRange, 1) * (radarRadius - 13);
+      const blipX = radarX + Math.sin(relativeAngle) * blipDistance;
+      const blipY = radarY - Math.cos(relativeAngle) * blipDistance;
+
+      ctx.beginPath();
+      ctx.arc(blipX, blipY, 5 + Math.sin(Date.now() * 0.008) * 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#fb4b4b';
+      ctx.shadowColor = '#ef4444';
+      ctx.shadowBlur = 12;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.font = "bold 10px 'Cinzel', serif";
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#fecaca';
+      ctx.fillText(`${Math.round(distance)} units`, radarX, radarY + radarRadius + 14);
+    } else {
+      ctx.font = "bold 9px 'Cinzel', serif";
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('NO CONTACT', radarX, radarY + radarRadius + 14);
+    }
+
+    ctx.restore();
+
+    ctx.beginPath();
+    ctx.moveTo(radarX, radarY + 7);
+    ctx.lineTo(radarX - 5, radarY - 4);
+    ctx.lineTo(radarX, radarY - 1);
+    ctx.lineTo(radarX + 5, radarY - 4);
+    ctx.closePath();
+    ctx.fillStyle = '#67e8f9';
+    ctx.fill();
+
+    ctx.font = "bold 10px 'Cinzel', serif";
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#a5f3fc';
+    ctx.fillText('RADAR', radarX, radarY - radarRadius - 7);
     ctx.restore();
   }
 }
