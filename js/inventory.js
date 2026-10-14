@@ -6,7 +6,7 @@
 class InventorySystem {
   constructor() {
     this.gold = 50;
-    this.ammo = 8;
+    this.ammo = 20;
     this.maxAmmo = 20;
 
     // Item registry
@@ -253,7 +253,7 @@ class InventorySystem {
 
   resetForNewGame() {
     this.gold = 50;
-    this.ammo = 8;
+    this.ammo = 20;
     const startingItems = { cutlass: 1, flintlock: 1, rum: 2, hardtack: 2, powder_pouch: 1 };
     Object.values(this.items).forEach(item => {
       item.qty = startingItems[item.id] || 0;

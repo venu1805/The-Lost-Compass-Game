@@ -115,6 +115,8 @@ class GameEngine {
     this.objectiveTextEl = document.getElementById('current-objective-text');
     this.levelBadgeEl = document.getElementById('current-level-badge');
     this.objectiveHintEl = document.getElementById('current-objective-hint');
+    this.objectiveBannerEl = document.querySelector('.objective-banner');
+    this.objectiveInfoTimer = 0;
   }
 
   init() {
@@ -138,6 +140,10 @@ class GameEngine {
     const mainMenuButton = document.getElementById('btn-main-menu');
 
     if (pauseButton) pauseButton.addEventListener('click', () => this.pauseGame());
+    const levelInfoButton = document.getElementById('btn-level-info');
+    if (levelInfoButton) {
+      levelInfoButton.addEventListener('click', () => this.showObjectiveInfo());
+    }
     if (resumeButton) resumeButton.addEventListener('click', () => this.resumeGame());
     if (restartButton) {
       restartButton.addEventListener('click', () => {
@@ -333,6 +339,7 @@ class GameEngine {
     }
 
     this.currentLevel.init();
+    this.currentLevel.alignLaddersToWalls?.();
     const shootButton = document.getElementById('btn-shoot-action');
     if (shootButton) {
       const isNavalBattle = this.currentLevel.isNavalBattle;
@@ -426,6 +433,7 @@ class GameEngine {
       this.levelBadgeEl.innerText = `LEVEL ${this.currentLevelIndex}`;
     }
     this.updateObjectiveGuidance();
+    this.showObjectiveInfo();
   }
 
   getObjectiveHint() {
@@ -474,6 +482,21 @@ class GameEngine {
     if (hint !== this.lastObjectiveHint) {
       this.objectiveHintEl.textContent = hint;
       this.lastObjectiveHint = hint;
+      this.showObjectiveInfo();
+    }
+  }
+
+  showObjectiveInfo() {
+    if (!this.objectiveBannerEl) return;
+    this.objectiveBannerEl.classList.remove('is-hidden');
+    this.objectiveInfoTimer = 6;
+  }
+
+  updateObjectiveInfoTimer(dt) {
+    if (this.objectiveInfoTimer <= 0) return;
+    this.objectiveInfoTimer = Math.max(0, this.objectiveInfoTimer - dt);
+    if (this.objectiveInfoTimer === 0 && this.objectiveBannerEl) {
+      this.objectiveBannerEl.classList.add('is-hidden');
     }
   }
 
@@ -561,6 +584,8 @@ class GameEngine {
   }
 
   update(dt) {
+    this.updateObjectiveInfoTimer(dt);
+
     // Update Renderer (particles, weather, camera)
     this.renderer.update(dt);
 

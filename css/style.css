@@ -76,6 +76,12 @@ html, body {
   pointer-events: auto;
 }
 
+.objective-banner.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* Top Left: Player Status Bars & Avatar */
 .player-status-card {
   position: absolute;
@@ -204,6 +210,9 @@ html, body {
   gap: 10px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.7);
   pointer-events: auto;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
 .objective-icon {
@@ -286,6 +295,27 @@ html, body {
 }
 
 .pause-menu-button:hover {
+  border-color: var(--gold-light);
+  background: var(--gold-dark);
+}
+
+.level-info-button {
+  position: absolute;
+  top: 76px;
+  right: 126px;
+  min-width: 72px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--brass);
+  border-radius: 6px;
+  background: rgba(20, 14, 10, 0.92);
+  color: var(--gold-light);
+  font: 600 12px 'Cinzel', serif;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.level-info-button:hover {
   border-color: var(--gold-light);
   background: var(--gold-dark);
 }
@@ -534,6 +564,13 @@ html, body {
     right: auto;
     bottom: 132px;
     left: 10px;
+  }
+
+  .level-info-button {
+    top: auto;
+    right: auto;
+    bottom: 132px;
+    left: 64px;
   }
 
   #touch-controls {

@@ -74,11 +74,59 @@ class LevelBase {
   checkLadderCollision(entity) {
     const b = entity.getBounds();
     for (const l of this.ladders) {
-      if (!(b.right < l.x || b.left > l.x + l.w || b.bottom < l.y || b.top > l.y + l.h)) {
+      const ladderLeft = l.x - 24;
+      const ladderRight = l.x + l.w + 24;
+      const ladderTop = l.y;
+      const ladderBottom = l.y + l.h;
+      const horizontalOverlap = b.right >= ladderLeft && b.left <= ladderRight;
+      const verticalOverlap = b.bottom >= ladderTop && b.top <= ladderBottom;
+      if (horizontalOverlap && verticalOverlap) {
         return true;
       }
     }
     return false;
+  }
+
+  alignLaddersToWalls() {
+    if (!Array.isArray(this.ladders) || !Array.isArray(this.platforms)) return;
+
+    const ladderClearance = 14;
+
+    this.ladders.forEach(ladder => {
+      const ladderCenter = ladder.x + ladder.w / 2;
+      const wallMatch = this.platforms
+        .filter(platform => platform.w < 800
+          && ladder.y < platform.y + platform.h
+          && ladder.y + ladder.h > platform.y)
+        .sort((a, b) => Math.abs(ladderCenter - (a.x + a.w / 2)) - Math.abs(ladderCenter - (b.x + b.w / 2)))[0];
+
+      if (!wallMatch) return;
+
+      ladder.x = wallMatch.x - ladder.w - ladderClearance;
+
+      if (wallMatch.h > wallMatch.w && wallMatch.h > 100) {
+        ladder.y = wallMatch.y - this.game.player.height;
+        const ground = this.platforms
+          .filter(platform => platform.w >= 800
+            && platform.x < ladder.x + ladder.w
+            && platform.x + platform.w > ladder.x
+            && platform.y >= wallMatch.y + wallMatch.h)
+          .sort((a, b) => a.y - b.y)[0];
+        const ladderBottom = ground ? ground.y : wallMatch.y + wallMatch.h;
+        ladder.h = ladderBottom - ladder.y;
+        return;
+      }
+
+      ladder.y = wallMatch.y;
+      const ground = this.platforms
+        .filter(platform => platform.w >= 800
+          && platform.x < ladder.x + ladder.w
+          && platform.x + platform.w > ladder.x
+          && platform.y >= wallMatch.y + wallMatch.h)
+        .sort((a, b) => a.y - b.y)[0];
+      const ladderBottom = ground ? ground.y : wallMatch.y + wallMatch.h;
+      ladder.h = Math.max(0, ladderBottom - ladder.y);
+    });
   }
 }
 
@@ -94,6 +142,7 @@ class Level1_TheStorm extends LevelBase {
   init() {
     this.game.renderer.setWeather('storm');
     this.waterLevel = 620;
+    this.compassTaken = false;
 
     // Sinking cursed galleon deck & platforms
     this.platforms = [
@@ -131,6 +180,7 @@ class Level1_TheStorm extends LevelBase {
           if (!window.inventorySystem.hasItem('compass')) {
             window.inventorySystem.addItem('compass', 1);
             window.mysticCompass.hasCompass = true;
+            this.compassTaken = true;
             this.game.showToast("✧ YOU OBTAINED THE LOST COMPASS! ✧");
             if (window.soundEngine) window.soundEngine.playCompassTone();
             this.objective = "Escape before the cursed ship sinks into the abyss!";
@@ -164,7 +214,7 @@ class Level1_TheStorm extends LevelBase {
 
   update(dt, player, input) {
     // Sinking ship creak & water rising effect
-    if (window.mysticCompass.hasCompass) {
+    if (this.compassTaken) {
       this.waterLevel = Math.max(500, this.waterLevel - dt * 10);
     }
 

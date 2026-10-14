@@ -146,18 +146,14 @@ class Player extends Entity {
       return;
     }
 
-    // Ladder / Rigging climbing
+    // Only the dedicated Up control starts climbing; W remains the jump key.
     const onLadder = currentLevel.checkLadderCollision(this);
-    if (onLadder && (input.isDown('KeyW') || input.isDown('ArrowUp') || input.isDown('KeyS') || input.isDown('ArrowDown'))) {
-      this.isClimbing = true;
-    } else if (!onLadder) {
-      this.isClimbing = false;
-    }
+    const climbUp = input.isDown('ArrowUp');
+    const startedClimbing = input.isJustPressed('ArrowUp');
+    this.isClimbing = onLadder && (this.isClimbing || startedClimbing);
 
     if (this.isClimbing) {
-      this.vy = 0;
-      if (input.isDown('KeyW') || input.isDown('ArrowUp')) this.vy = -180;
-      if (input.isDown('KeyS') || input.isDown('ArrowDown')) this.vy = 180;
+      this.vy = climbUp ? -180 : 0;
       if (input.isDown('KeyA') || input.isDown('ArrowLeft')) this.vx = -120;
       else if (input.isDown('KeyD') || input.isDown('ArrowRight')) this.vx = 120;
       else this.vx = 0;
